@@ -40,25 +40,31 @@ public class Main {
     }
 
     public static boolean register(String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        //Revisamos si el mail es válido
         if (!validateMail(email)) return false;
 
+        //Hasheamos mail
         String hashedPassword = generateStrongPasswordHash(password);
 
         User user = new User (email, hashedPassword);
 
+        //Recorremos mails ya utilizados
         for (User value : users) {
             if (user.getEmail().equals(value.getEmail())) {
                 return false;
             }
         }
 
+        //Añadimos user si es correcto
         users.add(user);
         return true;
     }
 
     public static int login (String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        //Recorremos el array para hacer match con el mail
         for (User value : users) {
             if (email.equals(value.getEmail())) {
+                //Comprobamos si la pass es correcta
                 if (validatePassword(password,value.getPassword())) {
                     return 1;
                 } else return -2;
